@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
+import Bookself from './components/bookself'
 
 class App extends Component {
   render() {
@@ -10,6 +11,9 @@ class App extends Component {
             <h1>MyReads</h1>
           </div>
           <div className='list-books-content'>
+            <Bookself title='Currently reading'/>
+            <Bookself title='Want to read'/>
+            <Bookself title='Read'/>
           </div>
         </div>
       </div>
