@@ -13,7 +13,7 @@ class Bookself extends Component {
                 <li key={book.id}>
                   <Book
                     title={book.title}
-                    author={book.authors[0]}
+                    authors={book.authors}
                     bgImage={`url(${book.imageLinks.thumbnail})`}/></li>
               ))}
             </ol>

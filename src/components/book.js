@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 class Book extends Component {
   render() {
-    const { title, author, bgImage, bookShelf } = this.props
+    const { title, authors, bgImage, bookShelf } = this.props
 
     return (
       <div className='book'>
@@ -10,7 +10,9 @@ class Book extends Component {
           <div className='book-cover' style={{ width: 128, height: 193, backgroundImage: bgImage }}></div>
         </div>
         <div className='book-title'>{title}</div>
-        <div className='book-authors'>{author}</div>
+        {authors.map(author => (
+          <div className='book-authors' key={author}>{author}</div>
+        ))}
       </div>
     )
   }
