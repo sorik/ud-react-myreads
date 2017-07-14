@@ -3,8 +3,38 @@ import { Link, Route } from 'react-router-dom'
 import './App.css';
 import Bookself from './components/bookself'
 import SearchBooks from './components/searchBooks'
+import { getAll } from './utils/BooksAPI'
 
 class App extends Component {
+
+  initShelfState = {
+    currentlyReading: [],
+    wantToRead: [],
+    read: []
+  }
+
+  state = {
+    shelf: this.initShelfState
+  }
+
+  categoriseBook(categories, book) {
+
+    if (book.shelf === 'currentlyReading')
+      categories.currentlyReading.push(book)
+    else if (book.shelf === 'wantToRead')
+      categories.wantToRead.push(book)
+    else if (book.shelf === 'read')
+      categories.read.push(book)
+
+    return categories
+  }
+
+  componentDidMount() {
+    getAll().then((books) => {
+      this.setState({ shelf: books.reduce(this.categoriseBook, this.initShelfState) })
+    })
+  }
+
   render() {
     return (
       <div className='app'>
@@ -14,9 +44,9 @@ class App extends Component {
               <h1>MyReads</h1>
             </div>
             <div className='list-books-content'>
-              <Bookself title='Currently reading'/>
-              <Bookself title='Want to read'/>
-              <Bookself title='Read'/>
+              <Bookself title='Currently reading' books={this.state.shelf.currentlyReading}/>
+              <Bookself title='Want to read' books={this.state.shelf.wantToRead}/>
+              <Bookself title='Read' books={this.state.shelf.read}/>
             </div>
             <div>
               <div className='open-search'>
