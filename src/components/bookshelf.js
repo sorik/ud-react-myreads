@@ -9,13 +9,15 @@ class Bookshelf extends Component {
   }
 
   render() {
+    const { title, books } = this.props
+
     return (
       <div>
         <div className='bookself'>
-          <h2 className='bookself-title'>{this.props.title}</h2>
+          <h2 className='bookself-title'>{title}</h2>
           <div className='bookself-books'>
             <ol className='books-grid'>
-              {this.props.books.map((book) => (
+              {books.map((book) => (
                 <li key={book.id}>
                   <Book
                     title={book.title}
