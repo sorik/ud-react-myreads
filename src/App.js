@@ -44,9 +44,17 @@ class App extends Component {
               <h1>MyReads</h1>
             </div>
             <div className='list-books-content'>
-              <Bookshelf title='Currently reading' books={this.state.shelf.currentlyReading}/>
-              <Bookshelf title='Want to read' books={this.state.shelf.wantToRead}/>
-              <Bookshelf title='Read' books={this.state.shelf.read}/>
+              <Bookshelf
+                title='Currently reading'
+                books={this.state.shelf.currentlyReading}
+              />
+              <Bookshelf
+                title='Want to read'
+                books={this.state.shelf.wantToRead}
+              />
+              <Bookshelf
+                title='Read'
+                books={this.state.shelf.read}/>
             </div>
             <div>
               <div className='open-search'>

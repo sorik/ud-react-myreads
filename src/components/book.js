@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import BookshelfChanger from './bookshelfChanger'
 
 class Book extends Component {
   static propTypes = {
@@ -9,12 +10,13 @@ class Book extends Component {
   }
 
   render() {
-    const { title, authors, bgImage } = this.props
+    const { title, authors, bgImage, bookshelf } = this.props
 
     return (
       <div className='book'>
         <div className='book-top'>
           <div className='book-cover' style={{ width: 128, height: 193, backgroundImage: bgImage }}></div>
+          <BookshelfChanger currentBookshelf={bookshelf}/>
         </div>
         <div className='book-title'>{title}</div>
         {authors.map(author => (
