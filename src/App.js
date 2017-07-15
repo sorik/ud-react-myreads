@@ -3,7 +3,7 @@ import { Link, Route } from 'react-router-dom'
 import './App.css';
 import Bookshelf from './components/bookshelf'
 import SearchBooks from './components/searchBooks'
-import { getAll } from './utils/BooksAPI'
+import { getAll, update } from './utils/BooksAPI'
 
 class App extends Component {
 
@@ -29,6 +29,20 @@ class App extends Component {
     return categories
   }
 
+  onChangeBookshelf = (book, to_shelf) => {
+    const from_shelf = book.shelf
+
+    this.setState((state) => {
+      state.shelf[from_shelf] = state.shelf[from_shelf].filter(b => b.id !== book.id)
+      if (to_shelf !== 'none')
+        state.shelf[to_shelf].push(book)
+
+      return {state}
+    })
+
+    update(book, to_shelf)
+  }
+
   componentDidMount() {
     getAll().then((books) => {
       this.setState({ shelf: books.reduce(this.categoriseBook, this.initShelfState) })
@@ -47,14 +61,18 @@ class App extends Component {
               <Bookshelf
                 title='Currently reading'
                 books={this.state.shelf.currentlyReading}
+                onChangeBookshelf={this.onChangeBookshelf}
               />
               <Bookshelf
                 title='Want to read'
                 books={this.state.shelf.wantToRead}
+                onChangeBookshelf={this.onChangeBookshelf}
               />
               <Bookshelf
                 title='Read'
-                books={this.state.shelf.read}/>
+                books={this.state.shelf.read}
+                onChangeBookshelf={this.onChangeBookshelf}
+              />
             </div>
             <div>
               <div className='open-search'>

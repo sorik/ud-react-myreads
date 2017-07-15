@@ -5,11 +5,12 @@ import Book from './book'
 class Bookshelf extends Component {
   static propTypes = {
     title: PropTypes.string.isRequired,
-    books: PropTypes.array
+    books: PropTypes.array,
+    onChangeBookshelf: PropTypes.func
   }
 
   render() {
-    const { title, books } = this.props
+    const { title, books, onChangeBookshelf } = this.props
 
     return (
       <div>
@@ -21,6 +22,7 @@ class Bookshelf extends Component {
                 <li key={book.id}>
                   <Book
                     bookshelf={book.shelf}
+                    onChangeBookshelf={(newShelf) => (onChangeBookshelf(book, newShelf))}
                     title={book.title}
                     authors={book.authors}
                     bgImage={`url(${book.imageLinks.thumbnail})`}/>
