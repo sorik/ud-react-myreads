@@ -40,6 +40,7 @@ class App extends Component {
       return {state}
     })
 
+    debugger
     update(book, to_shelf)
   }
 
@@ -82,7 +83,10 @@ class App extends Component {
           </div>
         )}>
         </Route>
-        <Route path='/search' component={SearchBooks}></Route>
+        <Route path='/search' render={() => (
+          <SearchBooks onChangeBookshelf={this.onChangeBookshelf} />
+        )}>
+        </Route>
       </div>
     );
   }
