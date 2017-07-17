@@ -33,14 +33,17 @@ class App extends Component {
     const from_shelf = book.shelf
 
     this.setState((state) => {
-      state.shelf[from_shelf] = state.shelf[from_shelf].filter(b => b.id !== book.id)
-      if (to_shelf !== 'none')
+      if (from_shelf !== 'none')
+        state.shelf[from_shelf] = state.shelf[from_shelf].filter(b => b.id !== book.id)
+      if (to_shelf !== 'none') {
+        book.shelf = to_shelf
         state.shelf[to_shelf].push(book)
+
+      }
 
       return {state}
     })
 
-    debugger
     update(book, to_shelf)
   }
 

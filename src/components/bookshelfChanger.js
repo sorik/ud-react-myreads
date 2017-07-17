@@ -12,7 +12,6 @@ class BookshelfChanger extends Component {
   }
 
   render() {
-    console.log(this.props.currentBookshelf)
     return (
       <div className="book-shelf-changer">
         <select

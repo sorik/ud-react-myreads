@@ -38,6 +38,7 @@ class SearchBooks extends Component {
                 {this.state.books.map((book) => (
                   <li key={book.id}>
                     <Book
+                      onChangeBookshelf={(newShelf) => (this.props.onChangeBookshelf(book, newShelf))}
                       bookshelf={book.shelf}
                       title={book.title}
                       authors={book.authors}
