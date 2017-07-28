@@ -7,41 +7,41 @@ import { getAll, update } from './utils/BooksAPI'
 
 class App extends Component {
 
-  initShelfState = {
-    currentlyReading: [],
-    wantToRead: [],
-    read: []
-  }
-
   state = {
-    shelf: this.initShelfState
+    books: []
   }
 
-  categoriseBook(categories, book) {
+  addToBookshelf = (bookshelf, book, to_shelf) => {
+    book.shelf = to_shelf
+    bookshelf.push(book)
+    return bookshelf
+  }
 
-    if (book.shelf === 'currentlyReading')
-      categories.currentlyReading.push(book)
-    else if (book.shelf === 'wantToRead')
-      categories.wantToRead.push(book)
-    else if (book.shelf === 'read')
-      categories.read.push(book)
+  removeFromBookshelf = (bookshelf, book) => {
+    return bookshelf.filter(b => book.id !== b.id)
+  }
 
-    return categories
+  moveToBookshelf = (bookshelf, book, to_shelf) => {
+    return bookshelf.map(b => {
+      if (b.id === book.id)
+        b.shelf = to_shelf
+      return b
+    })
   }
 
   onChangeBookshelf = (book, to_shelf) => {
     const from_shelf = book.shelf
+    let updated
 
     this.setState((state) => {
-      if (from_shelf !== 'none' && from_shelf !== undefined)
-        state.shelf[from_shelf] = state.shelf[from_shelf].filter(b => b.id !== book.id)
-      if (to_shelf !== 'none') {
-        book.shelf = to_shelf
-        state.shelf[to_shelf].push(book)
+      if (from_shelf === 'none' || from_shelf === undefined)
+        updated = this.addToBookshelf(state.books, book, to_shelf)
+      else if (to_shelf === 'none')
+        updated = this.removeFromBookshelf(state.books, book)
+      else
+        updated = this.moveToBookshelf(state.books, book, to_shelf)
 
-      }
-
-      return {state}
+      return { books: updated }
     })
 
     update(book, to_shelf)
@@ -49,7 +49,7 @@ class App extends Component {
 
   componentDidMount() {
     getAll().then((books) => {
-      this.setState({ shelf: books.reduce(this.categoriseBook, this.initShelfState) })
+      this.setState({ books })
     })
   }
 
@@ -64,17 +64,17 @@ class App extends Component {
             <div className='list-books-content'>
               <Bookshelf
                 title='Currently reading'
-                books={this.state.shelf.currentlyReading}
+                books={this.state.books.filter(book => book.shelf === 'currentlyReading')}
                 onChangeBookshelf={this.onChangeBookshelf}
               />
               <Bookshelf
                 title='Want to read'
-                books={this.state.shelf.wantToRead}
+                books={this.state.books.filter(book => book.shelf === 'wantToRead')}
                 onChangeBookshelf={this.onChangeBookshelf}
               />
               <Bookshelf
                 title='Read'
-                books={this.state.shelf.read}
+                books={this.state.books.filter(book => book.shelf === 'read')}
                 onChangeBookshelf={this.onChangeBookshelf}
               />
             </div>
@@ -89,7 +89,7 @@ class App extends Component {
         <Route path='/search' render={() => (
           <SearchBooks
             onChangeBookshelf={this.onChangeBookshelf}
-            bookshelves={this.state.shelf} />
+            bookshelves={this.state.books} />
         )}>
         </Route>
       </div>

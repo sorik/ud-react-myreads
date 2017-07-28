@@ -7,7 +7,7 @@ import { search } from '../utils/BooksAPI'
 class SearchBooks extends Component {
 
   static propTypes = {
-    bookshelves: PropTypes.object.isRequired,
+    bookshelves: PropTypes.array.isRequired,
     onChangeBookshelf: PropTypes.func.isRequired
   }
 
@@ -24,15 +24,9 @@ class SearchBooks extends Component {
   }
 
   setBookshelf = (book) => {
-    let bookInShelf
-    const { bookshelves } = this.props
-
-    Object.keys(bookshelves).forEach((key) => {
-      bookInShelf = this.findBook(bookshelves[key], book)
-
-      if (bookInShelf.length > 0)
-        book.shelf = bookInShelf[0].shelf
-    })
+    let bookInShelf = this.findBook(this.props.bookshelves, book)
+    if (bookInShelf.length > 0)
+      book.shelf = bookInShelf[0].shelf
 
     return book
   }
