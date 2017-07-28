@@ -8,15 +8,35 @@ class SearchBooks extends Component {
     books: []
   }
 
-  componentDidMount() {
+  isTheSameBook = (bookA, bookB) => {
+    return bookA.id === bookB.id
+  }
 
+  findBook = (books, book) => {
+    return books.filter((b) => this.isTheSameBook(b, book))
+  }
+
+  setBookshelf = (book) => {
+    let bookInShelf
+    const { bookshelves } = this.props
+
+    Object.keys(bookshelves).forEach((key) => {
+      bookInShelf = this.findBook(bookshelves[key], book)
+
+      if (bookInShelf.length > 0)
+        book.shelf = bookInShelf[0].shelf
+    })
+
+    return book
   }
 
   onSearch = (event) => {
     if (event.key === 'Enter')
       search(event.target.value, 20).then(books => {
-        if (Array.isArray(books))
-          this.setState({ books })
+        if (Array.isArray(books)) {
+          let updatedBooks = books.map((book) => this.setBookshelf(book))
+          this.setState({ books: updatedBooks })
+        }
       })
   }
 

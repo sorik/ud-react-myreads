@@ -33,7 +33,7 @@ class App extends Component {
     const from_shelf = book.shelf
 
     this.setState((state) => {
-      if (from_shelf !== 'none')
+      if (from_shelf !== 'none' && from_shelf !== undefined)
         state.shelf[from_shelf] = state.shelf[from_shelf].filter(b => b.id !== book.id)
       if (to_shelf !== 'none') {
         book.shelf = to_shelf
@@ -87,7 +87,9 @@ class App extends Component {
         )}>
         </Route>
         <Route path='/search' render={() => (
-          <SearchBooks onChangeBookshelf={this.onChangeBookshelf} />
+          <SearchBooks
+            onChangeBookshelf={this.onChangeBookshelf}
+            bookshelves={this.state.shelf} />
         )}>
         </Route>
       </div>
