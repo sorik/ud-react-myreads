@@ -27,6 +27,8 @@ class SearchBooks extends Component {
     let bookInShelf = this.findBook(this.props.bookshelves, book)
     if (bookInShelf.length > 0)
       book.shelf = bookInShelf[0].shelf
+    else
+      book.shelf = 'none'
 
     return book
   }
