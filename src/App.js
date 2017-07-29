@@ -11,40 +11,15 @@ class App extends Component {
     books: []
   }
 
-  addToBookshelf = (bookshelf, book, to_shelf) => {
-    book.shelf = to_shelf
-    bookshelf.push(book)
-    return bookshelf
-  }
-
-  removeFromBookshelf = (bookshelf, book) => {
-    return bookshelf.filter(b => book.id !== b.id)
-  }
-
-  moveToBookshelf = (bookshelf, book, to_shelf) => {
-    return bookshelf.map(b => {
-      if (b.id === book.id)
-        b.shelf = to_shelf
-      return b
-    })
-  }
-
   onChangeBookshelf = (book, to_shelf) => {
-    const from_shelf = book.shelf
-    let updated
-
-    this.setState((state) => {
-      if (from_shelf === 'none' || from_shelf === undefined)
-        updated = this.addToBookshelf(state.books, book, to_shelf)
-      else if (to_shelf === 'none')
-        updated = this.removeFromBookshelf(state.books, book)
-      else
-        updated = this.moveToBookshelf(state.books, book, to_shelf)
-
-      return { books: updated }
-    })
-
-    update(book, to_shelf)
+    if (book.shelf !== to_shelf) {
+      update(book, to_shelf).then(() => {
+        book.shelf = to_shelf
+        this.setState(state => ({
+          books: state.books.filter(b => b.id !== book.id).concat([book])
+        }))
+      })
+    }
   }
 
   componentDidMount() {
